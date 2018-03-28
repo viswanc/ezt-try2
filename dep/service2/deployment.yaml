@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.10.0 (8bb0907)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: service2
+  name: service2
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: service2
+    spec:
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: "2"
+        image: gcr.io/api-project-483163119575/zipkintracing_service
+        name: service2
+        resources: {}
+        volumeMounts:
+        - name: service2-claim0
+          mountPath: /var/logs/zipkin/service2
+        - name: envoy-config-service2
+          mountPath: /etc
+      restartPolicy: Always
+      volumes:
+      - name: service2-claim0
+        persistentVolumeClaim:
+          claimName: service2-claim0
+      - name: envoy-config-service2
+        configMap:
+          name: envoy-config-service2
+          items:
+            - key: config
+              path: service-envoy.yaml
+status: {}

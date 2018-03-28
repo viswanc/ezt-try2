@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.10.0 (8bb0907)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: front-envoy
+  name: front-envoy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: front-envoy
+    spec:
+      containers:
+      - image: gcr.io/api-project-483163119575/zipkintracing_front-envoy
+        name: front-envoy
+        ports:
+        - containerPort: 80
+        - containerPort: 8001
+        resources: {}
+        volumeMounts:
+        - name: front-envoy-claim0
+          mountPath: /var/logs/zipkin/front-envoy-claim0
+        - name: envoy-config-front-envoy
+          mountPath: /etc
+      restartPolicy: Always
+      volumes:
+      - name: front-envoy-claim0
+        persistentVolumeClaim:
+          claimName: front-envoy-claim0
+      - name: envoy-config-front-envoy
+        configMap:
+          name: envoy-config-front-envoy
+          items:
+            - key: config
+              path: front-envoy.yaml
+status: {}

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipkin-lb
+  labels:
+    io.kompose.service: zipkin
+spec:
+  type: LoadBalancer
+  selector:
+    io.kompose.service: zipkin
+  ports:
+  - port: 9411
+    protocol: TCP
+    targetPort: 9411
