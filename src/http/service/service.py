@@ -28,11 +28,11 @@ def hello(service_number):
 def trace(service_number):
     headers = {}
     # call service 2 from service 1
-    # if int(os.environ['SERVICE_NAME']) == 1 :
-    #     for header in TRACE_HEADERS_TO_PROPAGATE:
-    #         if header in request.headers:
-    #             headers[header] = request.headers[header]
-    #     ret = requests.get("http://localhost:9000/trace/2", headers=headers)
+    if int(os.environ['SERVICE_NAME']) == 1 :
+        for header in TRACE_HEADERS_TO_PROPAGATE:
+            if header in request.headers:
+                headers[header] = request.headers[header]
+        ret = requests.get("http://localhost:9000/trace/2", headers=headers)
     return ('Hello from behind Envoy (service {})! hostname: {} resolved'
             'hostname: {}\n'.format(os.environ['SERVICE_NAME'],
                                     socket.gethostname(),

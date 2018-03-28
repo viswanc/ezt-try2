@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -19,17 +20,26 @@ spec:
         io.kompose.service: service2
     spec:
       containers:
-      - env:
-        - name: SERVICE_NAME
-          value: "2"
-        image: gcr.io/api-project-483163119575/http-service
-        name: service2
-        resources: {}
-        volumeMounts:
-        - name: service2-claim0
-          mountPath: /var/logs/zipkin/service2
-        - name: envoy-config-service2
-          mountPath: /etc
+        - command: ['/usr/local/bin/start_service.sh']
+          env:
+            - name: SERVICE_NAME
+              value: "2"
+          image: gcr.io/api-project-483163119575/http-service
+          name: service2
+          resources: {}
+        - command: ['/usr/local/bin/envoy']
+          args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'envoy-sidecar']
+          env:
+            - name: SERVICE_NAME
+              value: "1"
+          image: gcr.io/api-project-483163119575/envoy-sidecar
+          name: envoy-sidecar
+          resources: {}
+          volumeMounts:
+          - name: service2-claim0
+            mountPath: /var/logs/zipkin/service2
+          - name: envoy-config-service2
+            mountPath: /etc
       restartPolicy: Always
       volumes:
       - name: service2-claim0
@@ -40,5 +50,5 @@ spec:
           name: envoy-config-service2
           items:
             - key: config
-              path: service-envoy.yaml
+              path: envoy-config.yaml
 status: {}

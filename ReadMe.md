@@ -21,3 +21,4 @@ Log
 
   * 0030  Decoupled the envoy-sidecar, as a container.
   * 0035  Exposed the HTTP service through front-envoy and verified Zipkin tracing for the same.
+  * 0101  Added service2.
