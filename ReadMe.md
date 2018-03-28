@@ -16,3 +16,8 @@ Log
   * 2258  Initiated the repo with a simple working implementation of the http services.
   * 2322  Ran a simple HTTP service.
   * 2338  Ran the HTTP service using config.
+
+* 180328
+
+  * 0030  Decoupled the envoy-sidecar, as a container.
+  * 0035  Exposed the HTTP service through front-envoy and verified Zipkin tracing for the same.
