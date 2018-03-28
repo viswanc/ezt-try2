@@ -22,9 +22,10 @@ spec:
       - env:
         - name: SERVICE_NAME
           value: "1"
-        image: gcr.io/api-project-483163119575/zipkintracing_service
+        image: gcr.io/api-project-483163119575/http-service
         name: service1
         resources: {}
+        command: ['/usr/local/bin/start_service.sh']
         volumeMounts:
         - name: service1-claim0
           mountPath: /var/logs/zipkin/service1
