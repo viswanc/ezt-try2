@@ -3,6 +3,14 @@ Envoy + Zipkin Tracing -Try 2
 
   Trial2 of the spike for implementing Zipkin tracing on a Kubernetes cluster.
 
+Setup
+-----
+Run the following command.
+
+```
+$ sh setup.sh
+```
+
 Notes
 -----
 
