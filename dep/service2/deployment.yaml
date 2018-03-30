@@ -2,22 +2,17 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.10.0 (8bb0907)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: service2
   name: service2
+  labels:
+    service: service2
 spec:
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: service2
+        service: service2
     spec:
       containers:
         - command: ['/usr/local/bin/start_service.sh']

@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: zipkin-lb
   labels:
-    io.kompose.service: zipkin
+    service: zipkin
 spec:
   type: LoadBalancer
   selector:
-    io.kompose.service: zipkin
+    service: zipkin
   ports:
   - port: 9411
     protocol: TCP

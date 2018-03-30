@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: front-envoy-lb
   labels:
-    io.kompose.service: front-envoy
+    service: front-envoy
 spec:
   type: LoadBalancer
   selector:
-    io.kompose.service: front-envoy
+    service: front-envoy
   ports:
   - name: http
     protocol: TCP
