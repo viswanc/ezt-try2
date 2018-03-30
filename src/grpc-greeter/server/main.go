@@ -31,7 +31,7 @@ import (
 )
 
 const (
-	port = ":8080"
+	address = "127.0.0.1:8080"
 )
 
 // server is used to implement helloworld.GreeterServer.
@@ -39,11 +39,12 @@ type server struct{}
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
+	log.Printf("[%p] %s", in, in.Name)
+	return &pb.HelloReply{Message: "Hello, " + in.Name + "!"}, nil
 }
 
 func main() {
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

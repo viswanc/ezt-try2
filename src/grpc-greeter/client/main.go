@@ -29,13 +29,16 @@ import (
 )
 
 const (
-	// address     = "35.200.241.23:8080"
-	address     = "localhost:8080"
+	defaultAddress     = "localhost:8080"
 	defaultName = "world"
 )
 
 func main() {
 	// Set up a connection to the server.
+	address := defaultAddress
+	if len(os.Args) > 1 {
+		address = os.Args[1]
+	}
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -45,8 +48,8 @@ func main() {
 
 	// Contact the server and print out its response.
 	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
+	if len(os.Args) > 2 {
+		name = os.Args[2]
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()

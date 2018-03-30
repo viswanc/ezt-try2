@@ -19,8 +19,10 @@ spec:
         io.kompose.service: front-envoy
     spec:
       containers:
-      - image: gcr.io/api-project-483163119575/zipkintracing_front-envoy
-        name: front-envoy
+      - name: envoy-sidecar
+        image: gcr.io/api-project-483163119575/envoy-sidecar
+        command: ['/usr/local/bin/envoy']
+        args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'front-proxy', '-l', 'debug']
         ports:
         - containerPort: 80
         - containerPort: 8001
@@ -40,5 +42,5 @@ spec:
           name: envoy-config-front-envoy
           items:
             - key: config
-              path: front-envoy.yaml
+              path: envoy-config.yaml
 status: {}

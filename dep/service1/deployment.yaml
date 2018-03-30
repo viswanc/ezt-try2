@@ -20,26 +20,23 @@ spec:
         io.kompose.service: service1
     spec:
       containers:
-        - command: ['/usr/local/bin/start_service.sh']
-          env:
-            - name: SERVICE_NAME
-              value: "1"
+        - name: service1
           image: gcr.io/api-project-483163119575/http-service
-          name: service1
-          resources: {}
-        - command: ['/usr/local/bin/envoy']
-          args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'envoy-sidecar']
+          command: ['/usr/local/bin/start_service.sh']
           env:
             - name: SERVICE_NAME
               value: "1"
+          resources: {}
+        - name: envoy-sidecar
           image: gcr.io/api-project-483163119575/envoy-sidecar
-          name: envoy-sidecar
+          command: ['/usr/local/bin/envoy']
+          args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'service1'] # #Note: The service-cluster value is used as the label for the service, in the tracing reports.
           resources: {}
           volumeMounts:
-          - name: service1-claim0
-            mountPath: /var/logs/zipkin/service1
-          - name: envoy-config-service1
-            mountPath: /etc
+            - name: service1-claim0
+              mountPath: /var/logs/zipkin/service1
+            - name: envoy-config-service1
+              mountPath: /etc
       restartPolicy: Always
       volumes:
       - name: service1-claim0

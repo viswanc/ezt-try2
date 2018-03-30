@@ -24,16 +24,16 @@ data:
               route_config:
                 name: service1_route
                 virtual_hosts:
-                - name: service1
+                - name: service1_vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: local_service
+                      cluster: service1_app
                     decorator:
-                      operation: checkAvailability
+                      operation: service1_call
               http_filters:
               - name: envoy.router
                 config: {}
@@ -52,21 +52,21 @@ data:
               route_config:
                 name: service2_route
                 virtual_hosts:
-                - name: service2
+                - name: service2_vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/trace/2"
                     route:
-                      cluster: service2
+                      cluster: service2_envoy
                     decorator:
-                      operation: checkStock
+                      operation: service2_call
               http_filters:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: local_service
+      - name: service1_app
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin
@@ -74,7 +74,7 @@ data:
         - socket_address:
             address: 127.0.0.1
             port_value: 8080
-      - name: service2
+      - name: service2_envoy
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin

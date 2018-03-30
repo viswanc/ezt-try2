@@ -19,9 +19,14 @@ spec:
         io.kompose.service: grpc-greeter
     spec:
       containers:
-      - env:
-        image: gcr.io/api-project-483163119575/grpc-greeter
+      - command: ['/usr/local/bin/start_service.sh']
         name: grpc-greeter
+        image: gcr.io/api-project-483163119575/grpc-greeter
+        resources: {}
+      - name: envoy-sidecar
+        image: gcr.io/api-project-483163119575/envoy-sidecar
+        command: ['/usr/local/bin/envoy']
+        args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'grpc-greeter', '-l', 'debug']
         resources: {}
         volumeMounts:
         - name: grpc-greeter-claim0
@@ -38,5 +43,5 @@ spec:
           name: envoy-config-grpc-greeter
           items:
             - key: config
-              path: service-envoy.yaml
+              path: envoy-config.yaml
 status: {}

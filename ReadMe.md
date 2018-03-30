@@ -1,5 +1,5 @@
-Envoy + Zipkin Tracing -Try 2
-=============================
+Envoy + Zipkin Tracing - Try 2
+==============================
 
   Trial2 of the spike for implementing Zipkin tracing on a Kubernetes cluster.
 
@@ -11,10 +11,17 @@ Run the following command.
 $ sh setup.sh
 ```
 
+ToDo
+----
+
+* Use files, instead of strings to configure Envoy. The issue is, such a way is unknown.
+
+* Try Jaeger tracing. Envoy's base repo has a working example.
+
 Notes
 -----
 
-* The base is a conversion of a docker-compose files from envoy's zipkin example. The conversion was done with the help of *kompose*.
+* The base is a conversion of docker-compose files from envoy's zipkin example. The conversion was done with the help of *kompose*.
 
 Log
 ---

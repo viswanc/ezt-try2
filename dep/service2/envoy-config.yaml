@@ -24,21 +24,21 @@ data:
               route_config:
                 name: local_route
                 virtual_hosts:
-                - name: service2
+                - name: service2_vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: local_service
+                      cluster: service2_app
                     decorator:
                       operation: checkStock
               http_filters:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: local_service
+      - name: service2_app
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin
