@@ -49,3 +49,4 @@ Log
 
   * 1930  Reorganized for a demo.
   * 2011  Changed a some labels.
+  * 2032  Imported the grpc-wrapper into the repo.
