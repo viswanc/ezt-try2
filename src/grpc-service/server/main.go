@@ -23,15 +23,12 @@ package main
 import (
 	"log"
 	"net"
+	"os"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 	"google.golang.org/grpc/reflection"
-)
-
-const (
-	address = "127.0.0.1:8080"
 )
 
 // server is used to implement helloworld.serviceServer.
@@ -44,15 +41,22 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 }
 
 func main() {
+
+	address := "127.0.0.1:8080"
+	if len(os.Args) > 1 {
+		address = os.Args[1]
+	}
+
 	lis, err := net.Listen("tcp", address)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Failed to listen: %v", err)
 	}
+	log.Printf("Listening to: %s", address)
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Fatalf("Failed to serve: %v", err)
 	}
 }

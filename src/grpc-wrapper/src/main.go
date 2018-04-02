@@ -1,5 +1,9 @@
 package main
 
+// Params:
+// 	- Address to listen.
+// 	-	address to route gRPC requests.
+	
 import (
 	"github.com/gin-gonic/gin"
 	"fmt"
@@ -91,6 +95,10 @@ func setupRouter() *gin.Engine {
 	r.POST("/grpc/greet", func(c *gin.Context) { // #Note: POST is used to closely resemble a gRPC request.
 
 		address := "localhost:9000"
+		if len(os.Args) > 2 {
+			address = os.Args[2]
+		}
+
 		conn, err := grpc.Dial(address, grpc.WithInsecure())
 		if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -116,10 +124,10 @@ func setupRouter() *gin.Engine {
 
 func main() {
 	r := setupRouter()
-	port := "8080"
+	address := "127.0.0.1:8080"
 	if len(os.Args) > 1 {
-		port = os.Args[1]
+		address = os.Args[1]
 	}
-	// r.Run("0.0.0.0:" + port) // Listen and Serve on 0.0.0.0:port
-	r.Run("127.0.0.1:" + port)
+
+	r.Run(address)
 }

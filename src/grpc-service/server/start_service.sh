@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-/bin/grpc-service
+
+/bin/grpc-service $1

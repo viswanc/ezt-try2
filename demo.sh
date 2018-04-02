@@ -4,6 +4,7 @@
 cd $(dirname "$0")
 export EXT_IP=$(kubectl get svc | grep front-envoy-lb | awk '{printf $4}') && echo $EXT_IP
 
+# Main
 # Ensure that HTTP calls are made.
 curl $EXT_IP:80/trace/2
 sleep 1; echo "\n"
