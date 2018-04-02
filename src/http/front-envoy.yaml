@@ -11,7 +11,7 @@ static_resources:
           codec_type: auto
           stat_prefix: ingress_http
           route_config:
-            name: local_route
+            name: local-route
             virtual_hosts:
             - name: backend
               domains:

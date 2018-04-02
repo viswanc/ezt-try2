@@ -22,23 +22,23 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: grpc-service_route
+                name: grpc-service-route
                 virtual_hosts:
-                - name: grpc-service_vh
+                - name: grpc-service-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: grpc-service_app
+                      cluster: grpc-service-app
                     decorator:
-                      operation: greeting
+                      operation: grpc-service-call
               http_filters:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: grpc-service_app
+      - name: grpc-service-app
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin

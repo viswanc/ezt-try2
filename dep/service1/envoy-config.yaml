@@ -22,18 +22,18 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: service1_route
+                name: service1-route
                 virtual_hosts:
-                - name: service1_vh
+                - name: service1-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: service1_app
+                      cluster: service1-app
                     decorator:
-                      operation: service1_call
+                      operation: service1-call
               http_filters:
               - name: envoy.router
                 config: {}
@@ -50,23 +50,23 @@ data:
               codec_type: auto
               stat_prefix: egress_http
               route_config:
-                name: service2_route
+                name: service2-route
                 virtual_hosts:
-                - name: service2_vh
+                - name: service2-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/trace/2"
                     route:
-                      cluster: service2_envoy
+                      cluster: service2-envoy
                     decorator:
-                      operation: service2_call
+                      operation: service2-call
               http_filters:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: service1_app
+      - name: service1-app
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin
@@ -74,7 +74,7 @@ data:
         - socket_address:
             address: 127.0.0.1
             port_value: 8080
-      - name: service2_envoy
+      - name: service2-envoy
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin

@@ -45,6 +45,7 @@ Log
   * 0035  Exposed the HTTP service through front-envoy and verified Zipkin tracing for the same.
   * 0101  Added service2.
 
-* 180328
+* 180302
 
-  * 0030  Reorganized for a demo.
+  * 1930  Reorganized for a demo.
+  * 2011  Changed a some labels.

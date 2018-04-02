@@ -22,23 +22,23 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: local_route
+                name: service2-route
                 virtual_hosts:
-                - name: service2_vh
+                - name: service2-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: service2_app
+                      cluster: service2-app
                     decorator:
-                      operation: checkStock
+                      operation: service2-call
               http_filters:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: service2_app
+      - name: service2-app
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin

@@ -23,18 +23,18 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: service1_route
+                name: service1-route
                 virtual_hosts:
-                - name: service1_vh
+                - name: service1-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: service1_envoy
+                      cluster: service1-envoy
                     decorator:
-                      operation: service1_call
+                      operation: service1-call
               http_filters:
               - name: envoy.router
                 config: {}
@@ -52,16 +52,16 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: grpc-wrapper_route
+                name: grpc-wrapper-route
                 virtual_hosts:
-                - name: grpc-wrapper_vh
+                - name: grpc-wrapper-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: grpc-service_envoy
+                      cluster: grpc-service-envoy
                     decorator:
                       # #Note: operations are case insensitive.
                       operation: grpc-service-call
@@ -82,16 +82,16 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: grpc-wrapper_route
+                name: grpc-wrapper-route
                 virtual_hosts:
-                - name: grpc-wrapper_vh
+                - name: grpc-wrapper-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: grpc-wrapper_envoy
+                      cluster: grpc-wrapper-envoy
                     decorator:
                       # #Note: operations are case insensitive.
                       operation: grpc-wrapper-call
@@ -99,7 +99,7 @@ data:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: service1_envoy
+      - name: service1-envoy
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin
@@ -108,7 +108,7 @@ data:
         - socket_address:
             address: service1
             port_value: 80
-      - name: grpc-service_envoy
+      - name: grpc-service-envoy
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin
@@ -117,7 +117,7 @@ data:
         - socket_address:
             address: grpc-service
             port_value: 80
-      - name: grpc-wrapper_envoy
+      - name: grpc-wrapper-envoy
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin

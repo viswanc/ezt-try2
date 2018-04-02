@@ -22,18 +22,18 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: grpc-wrapper_route
+                name: grpc-wrapper-route
                 virtual_hosts:
-                - name: grpc-wrapper_vh
+                - name: grpc-wrapper-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: grpc-wrapper_app
+                      cluster: grpc-wrapper-app
                     decorator:
-                      operation: grpc-wrapper_call
+                      operation: grpc-wrapper-call
               http_filters:
               - name: envoy.router
                 config: {}
@@ -50,23 +50,23 @@ data:
               codec_type: http2
               stat_prefix: egress_http
               route_config:
-                name: grpc-service_route
+                name: grpc-service-route
                 virtual_hosts:
-                - name: grpc-service_vh
+                - name: grpc-service-vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: grpc-service_envoy
+                      cluster: grpc-service-envoy
                     decorator:
-                      operation: grpc-service_call
+                      operation: grpc-service-call
               http_filters:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: grpc-wrapper_app
+      - name: grpc-wrapper-app
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin
@@ -74,7 +74,7 @@ data:
         - socket_address:
             address: 127.0.0.1
             port_value: 8080
-      - name: grpc-service_envoy
+      - name: grpc-service-envoy
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin
