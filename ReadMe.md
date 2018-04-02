@@ -52,3 +52,4 @@ Log
   * 2032  Imported the grpc-wrapper into the repo.
   * 2104  Made the go services to accept a command line argument for the port to listen.
   * 2118  Added a script to ensure that the gRPC service is accessible through a load-balancer.
+  * 2130  Improved the demo script.
