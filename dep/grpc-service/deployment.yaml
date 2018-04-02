@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: grpc-greeter
+  name: grpc-service
   labels:
-    service: grpc-greeter
+    service: grpc-service
 spec:
   replicas: 1
   strategy:
@@ -11,31 +11,31 @@ spec:
   template:
     metadata:
       labels:
-        service: grpc-greeter
+        service: grpc-service
     spec:
       containers:
       - command: ['/usr/local/bin/start_service.sh']
-        name: grpc-greeter
-        image: gcr.io/api-project-483163119575/grpc-greeter
+        name: grpc-service
+        image: gcr.io/api-project-483163119575/grpc-service
         resources: {}
       - name: envoy-sidecar
         image: gcr.io/api-project-483163119575/envoy-sidecar
         command: ['/usr/local/bin/envoy']
-        args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'grpc-greeter', '-l', 'debug']
+        args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'grpc-service', '-l', 'debug']
         resources: {}
         volumeMounts:
-        - name: grpc-greeter-claim0
-          mountPath: /var/logs/zipkin/grpc-greeter
-        - name: envoy-config-grpc-greeter
+        - name: grpc-service-claim0
+          mountPath: /var/logs/zipkin/grpc-service
+        - name: envoy-config-grpc-service
           mountPath: /etc
       restartPolicy: Always
       volumes:
-      - name: grpc-greeter-claim0
+      - name: grpc-service-claim0
         persistentVolumeClaim:
-          claimName: grpc-greeter-claim0
-      - name: envoy-config-grpc-greeter
+          claimName: grpc-service-claim0
+      - name: envoy-config-grpc-service
         configMap:
-          name: envoy-config-grpc-greeter
+          name: envoy-config-grpc-service
           items:
             - key: config
               path: envoy-config.yaml

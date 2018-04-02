@@ -1,4 +1,4 @@
-# GreeterServer
+# serviceServer
 
   A copy from the gRPC examples, to try gRPC.
 

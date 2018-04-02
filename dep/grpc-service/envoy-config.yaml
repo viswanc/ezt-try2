@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: envoy-config-grpc-greeter
+  name: envoy-config-grpc-service
   labels:
-    name: envoy-config-grpc-greeter
+    name: envoy-config-grpc-service
 data:
   config: |-
     ---
@@ -22,23 +22,23 @@ data:
               codec_type: auto
               stat_prefix: ingress_http
               route_config:
-                name: grpc-greeter_route
+                name: grpc-service_route
                 virtual_hosts:
-                - name: grpc-greeter_vh
+                - name: grpc-service_vh
                   domains:
                   - "*"
                   routes:
                   - match:
                       prefix: "/"
                     route:
-                      cluster: grpc-greeter_app
+                      cluster: grpc-service_app
                     decorator:
                       operation: greeting
               http_filters:
               - name: envoy.router
                 config: {}
       clusters:
-      - name: grpc-greeter_app
+      - name: grpc-service_app
         connect_timeout: 0.250s
         type: strict_dns
         lb_policy: round_robin

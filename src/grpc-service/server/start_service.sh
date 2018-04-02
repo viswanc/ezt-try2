@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-/bin/grpc-greeter
+/bin/grpc-service

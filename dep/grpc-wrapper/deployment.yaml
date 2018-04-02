@@ -1,0 +1,46 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: grpc-wrapper
+  labels:
+    service: grpc-wrapper
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: grpc-wrapper
+    spec:
+      containers:
+        - name: grpc-wrapper
+          image: gcr.io/api-project-483163119575/simple-go
+          command: ['/bin/simple-go']
+          env:
+            - name: SERVICE_NAME
+              value: "1"
+          resources: {}
+        - name: envoy-sidecar
+          image: gcr.io/api-project-483163119575/envoy-sidecar
+          command: ['/usr/local/bin/envoy']
+          args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'grpc-wrapper', '-l', 'debug']
+          resources: {}
+          volumeMounts:
+            - name: grpc-wrapper-claim0
+              mountPath: /var/logs/zipkin/grpc-wrapper
+            - name: envoy-config-grpc-wrapper
+              mountPath: /etc
+      restartPolicy: Always
+      volumes:
+      - name: grpc-wrapper-claim0
+        persistentVolumeClaim:
+          claimName: grpc-wrapper-claim0
+      - name: envoy-config-grpc-wrapper
+        configMap:
+          name: envoy-config-grpc-wrapper
+          items:
+            - key: config
+              path: envoy-config.yaml
+status: {}

@@ -34,10 +34,10 @@ const (
 	address = "127.0.0.1:8080"
 )
 
-// server is used to implement helloworld.GreeterServer.
+// server is used to implement helloworld.serviceServer.
 type server struct{}
 
-// SayHello implements helloworld.GreeterServer
+// SayHello implements helloworld.serviceServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	log.Printf("[%p] %s", in, in.Name)
 	return &pb.HelloReply{Message: "Hello, " + in.Name + "!"}, nil

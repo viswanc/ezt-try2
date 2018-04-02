@@ -5,11 +5,18 @@ Envoy + Zipkin Tracing - Try 2
 
 Setup
 -----
-Run the following command.
+Run the following commands.
 
 ```
-$ sh setup.sh
+$ sh setup.sh # Setup the project.
+
+$ sh dep/configure.sh apply # Deploy the artifacts to GKE.
 ```
+
+Issues
+------
+
+* As of now, the primary blocker is that the grpc-service couldn't be accessed through Envoy. But, it works with port-forwarding and load-balancing.
 
 ToDo
 ----
@@ -37,3 +44,7 @@ Log
   * 0030  Decoupled the envoy-sidecar, as a container.
   * 0035  Exposed the HTTP service through front-envoy and verified Zipkin tracing for the same.
   * 0101  Added service2.
+
+* 180328
+
+  * 0030  Reorganized for a demo.

@@ -2,7 +2,7 @@ from flask import Flask
 from flask import request
 import socket
 import os
-import sys
+
 import requests
 
 app = Flask(__name__)
@@ -16,6 +16,10 @@ TRACE_HEADERS_TO_PROPAGATE = [
     'X-B3-Sampled',
     'X-B3-Flags'
 ]
+
+@app.route('/ping')
+def ping():
+    return 'pong'
 
 @app.route('/service/<service_number>')
 def hello(service_number):

@@ -6,12 +6,12 @@ metadata:
     service: front-envoy
 spec:
   ports:
-  - name: "8000"
-    port: 8000
-    targetPort: 80
-  - name: "8001"
+  - name: "80"
+    port: 80
+  - name: "8001" # #Note: The port is specified, as it's used by envoy, for admin (check envoy-config).
     port: 8001
-    targetPort: 8001
+  - name: "8080"
+    port: 8080
   selector:
     service: front-envoy
 status:

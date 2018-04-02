@@ -18,9 +18,6 @@ spec:
         image: gcr.io/api-project-483163119575/envoy-sidecar
         command: ['/usr/local/bin/envoy']
         args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'front-proxy', '-l', 'debug']
-        ports:
-        - containerPort: 80
-        - containerPort: 8001
         resources: {}
         volumeMounts:
         - name: front-envoy-claim0
