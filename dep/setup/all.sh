@@ -13,23 +13,24 @@ then
 
 else
 
-  find ../config -type d -depth 2 -not -path "*/\.*" -exec kubectl $1 -f {} \;
+  # find ../config -type d -depth 2 -not -path "*/\.*" -exec kubectl $1 -f {} \;
+  kubectl $1 -f ../config/gateways
 
   if [ "$1" == "apply" ]
   then
 
-    export ZIPKIN_EXT_IP="<pending>"
+    ZIPKIN_EXT_IP="<pending>"
     while [ "$ZIPKIN_EXT_IP" == "<pending>" ]
     do
-      export ZIPKIN_EXT_IP=$(kubectl get svc | grep zipkin-lb | awk '{printf $4}')
+      ZIPKIN_EXT_IP=$(kubectl get svc | grep zipkin-lb | awk '{printf $4}')
       echo Waiting for zipkin...
       sleep 1
     done
 
-    export EXT_IP="<pending>"
+    EXT_IP="<pending>"
     while [ "$EXT_IP" == "<pending>" ]
     do
-      export EXT_IP=$(kubectl get svc | grep front-envoy-lb | awk '{printf $4}')
+      EXT_IP=$(kubectl get svc | grep front-envoy-lb | awk '{printf $4}')
       echo Waiting for external IP...
       sleep 1
     done
