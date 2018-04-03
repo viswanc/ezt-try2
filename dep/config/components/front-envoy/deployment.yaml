@@ -20,15 +20,10 @@ spec:
         args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'front-proxy', '-l', 'debug']
         resources: {}
         volumeMounts:
-        - name: front-envoy-claim0
-          mountPath: /var/logs/zipkin/front-envoy-claim0
         - name: envoy-config-front-envoy
           mountPath: /etc
       restartPolicy: Always
       volumes:
-      - name: front-envoy-claim0
-        persistentVolumeClaim:
-          claimName: front-envoy-claim0
       - name: envoy-config-front-envoy
         configMap:
           name: envoy-config-front-envoy

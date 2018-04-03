@@ -1,7 +1,7 @@
 Envoy + Zipkin Tracing - Try 2
 ==============================
 
-  Trial2 of the spike for implementing Zipkin tracing on a Kubernetes cluster.
+  Trial-2 of the spike for implementing Zipkin tracing on a Kubernetes cluster.
 
 Setup
 -----
@@ -81,3 +81,4 @@ Log
   * 1145  Restructured the project for easier operations.
   * 1520  Started using docker as the container repo.
   * 1645  Minor fixes to the scripts.
+  * 2350  Removed some unused config.

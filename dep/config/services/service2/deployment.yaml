@@ -28,15 +28,10 @@ spec:
           name: envoy-sidecar
           resources: {}
           volumeMounts:
-          - name: service2-claim0
-            mountPath: /var/logs/zipkin/service2
           - name: envoy-config-service2
             mountPath: /etc
       restartPolicy: Always
       volumes:
-      - name: service2-claim0
-        persistentVolumeClaim:
-          claimName: service2-claim0
       - name: envoy-config-service2
         configMap:
           name: envoy-config-service2

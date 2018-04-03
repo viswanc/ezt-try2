@@ -28,15 +28,10 @@ spec:
           args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'grpc-wrapper', '-l', 'debug']
           resources: {}
           volumeMounts:
-            - name: grpc-wrapper-claim0
-              mountPath: /var/logs/zipkin/grpc-wrapper
             - name: envoy-config-grpc-wrapper
               mountPath: /etc
       restartPolicy: Always
       volumes:
-      - name: grpc-wrapper-claim0
-        persistentVolumeClaim:
-          claimName: grpc-wrapper-claim0
       - name: envoy-config-grpc-wrapper
         configMap:
           name: envoy-config-grpc-wrapper

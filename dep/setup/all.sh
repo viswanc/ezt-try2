@@ -13,7 +13,7 @@ then
 
 else
 
-  # find ../config -type d -depth 2 -not -path "*/\.*" -exec kubectl $1 -f {} \;
+  find ../config -type d -depth 2 -not -path "*/\.*" -exec kubectl $1 -f {} \;
   kubectl $1 -f ../config/gateways
 
   if [ "$1" == "apply" ]

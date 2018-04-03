@@ -28,15 +28,10 @@ spec:
           args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'service1'] # #Note: The service-cluster value is used as the label for the service, in the tracing reports.
           resources: {}
           volumeMounts:
-            - name: service1-claim0
-              mountPath: /var/logs/zipkin/service1
             - name: envoy-config-service1
               mountPath: /etc
       restartPolicy: Always
       volumes:
-      - name: service1-claim0
-        persistentVolumeClaim:
-          claimName: service1-claim0
       - name: envoy-config-service1
         configMap:
           name: envoy-config-service1
