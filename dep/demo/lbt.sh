@@ -1,4 +1,6 @@
-# A demo script for accessing the grpc-service through a load-balancer.
+#!/bin/sh
+
+# A script for demo on accessing the grpc-service through a load-balancer.
 
 # Setup
 cd $(dirname "$0")

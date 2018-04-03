@@ -10,13 +10,13 @@ Run the following commands.
 ```
 $ sh setup.sh # Setup the project.
 
-$ sh dep/configure.sh apply # Deploy the artifacts to GKE.
+$ sh dep/setup/deploy.sh # Deploy the artifacts to GKE.
 ```
 
 Issues
 ------
 
-* As of now, the primary blocker is that the grpc-service couldn't be accessed through Envoy. But, it works with port-forwarding and load-balancing.
+* *None, yet.*
 
 ToDo
 ----
@@ -31,6 +31,19 @@ Notes
 -----
 
 * The base is a conversion of docker-compose files from envoy's zipkin example. The conversion was done with the help of *kompose*.
+
+Structure
+---------
+
+* src - The source files for the services.
+
+* dep - The deployment files.
+
+  * services - Deployment scripts for the services.
+
+  * gateways - The components that expose the services to the internet. They are kept separate from other components, as they take quite some time to acquire external IPs.
+
+  * components - Components of the system other than gateways and services.
 
 Log
 ---
@@ -60,3 +73,4 @@ Log
 
   * 0610  Successfully made a gRPC call.
   * 0625  Successfully made gRPC calls through the load-balancer and the grpc-wrapper service.
+  * 1145  Restructured the project for easier operations.
