@@ -37,6 +37,7 @@ def trace(service_number):
             if header in request.headers:
                 headers[header] = request.headers[header]
         ret = requests.get("http://localhost:9000/trace/2", headers=headers)
+
     return ('Hello from behind Envoy (service {})! hostname: {} resolved'
             'hostname: {}\n'.format(os.environ['SERVICE_NAME'],
                                     socket.gethostname(),

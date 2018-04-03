@@ -10,7 +10,7 @@ Run the following commands.
 ```
 $ sh setup.sh # Setup the project.
 
-$ sh dep/setup/deploy.sh # Deploy the artifacts to GKE.
+$ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace.
 ```
 
 Issues
@@ -74,3 +74,4 @@ Log
   * 0610  Successfully made a gRPC call.
   * 0625  Successfully made gRPC calls through the load-balancer and the grpc-wrapper service.
   * 1145  Restructured the project for easier operations.
+  * 1520  Started using docker as the container repo.

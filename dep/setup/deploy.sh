@@ -7,4 +7,7 @@ cd $(dirname "$0")
 sh all.sh delete
 sh all.sh apply
 
+echo "\n-----------------\n"
 sh info.sh
+
+echo "\n-----------------"

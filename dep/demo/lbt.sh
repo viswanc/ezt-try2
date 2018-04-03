@@ -6,7 +6,7 @@
 cd $(dirname "$0")
 
 kubectl delete deployment lbt
-kubectl run lbt --image=gcr.io/api-project-483163119575/grpc-service --port 8080 --command=true /usr/local/bin/start_service.sh 0.0.0.0:8080
+kubectl run lbt --image=viswanathct/grpc-service --port 8080 --command=true /usr/local/bin/start_service.sh 0.0.0.0:8080
 
 kubectl delete service lbt
 kubectl expose deployment lbt --type=LoadBalancer --port 80 --target-port 8080

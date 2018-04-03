@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
         - name: service1
-          image: gcr.io/api-project-483163119575/http-service
+          image: viswanathct/http-service
           command: ['/usr/local/bin/start_service.sh']
           env:
             - name: SERVICE_NAME
               value: "1"
           resources: {}
         - name: envoy-sidecar
-          image: gcr.io/api-project-483163119575/envoy-sidecar
+          image: viswanathct/envoy-sidecar
           command: ['/usr/local/bin/envoy']
           args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'service1'] # #Note: The service-cluster value is used as the label for the service, in the tracing reports.
           resources: {}

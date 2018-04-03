@@ -16,10 +16,10 @@ spec:
       containers:
       - command: ['/usr/local/bin/start_service.sh']
         name: grpc-service
-        image: gcr.io/api-project-483163119575/grpc-service
+        image: viswanathct/grpc-service
         resources: {}
       - name: envoy-sidecar
-        image: gcr.io/api-project-483163119575/envoy-sidecar
+        image: viswanathct/envoy-sidecar
         command: ['/usr/local/bin/envoy']
         args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'grpc-service', '-l', 'debug']
         resources: {}

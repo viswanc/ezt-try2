@@ -19,12 +19,12 @@ spec:
           env:
             - name: SERVICE_NAME
               value: "2"
-          image: gcr.io/api-project-483163119575/http-service
+          image: viswanathct/http-service
           name: service2
           resources: {}
         - command: ['/usr/local/bin/envoy']
           args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'service2']
-          image: gcr.io/api-project-483163119575/envoy-sidecar
+          image: viswanathct/envoy-sidecar
           name: envoy-sidecar
           resources: {}
           volumeMounts:

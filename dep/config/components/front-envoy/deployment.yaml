@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: envoy-sidecar
-        image: gcr.io/api-project-483163119575/envoy-sidecar
+        image: viswanathct/envoy-sidecar
         command: ['/usr/local/bin/envoy']
         args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'front-proxy', '-l', 'debug']
         resources: {}
