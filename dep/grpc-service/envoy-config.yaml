@@ -40,8 +40,9 @@ data:
       clusters:
       - name: grpc-service-app
         connect_timeout: 0.250s
-        type: strict_dns
+        type: static
         lb_policy: round_robin
+        http2_protocol_options: {}
         hosts:
         - socket_address:
             address: 127.0.0.1

@@ -21,6 +21,8 @@ Issues
 ToDo
 ----
 
+* Check whether the breakage of the trace, that occurs withe the wrapper-routed gRPC call could be avoided.
+
 * Use files, instead of strings to configure Envoy. The issue is, such a way is unknown.
 
 * Try Jaeger tracing. Envoy's base repo has a working example.
@@ -53,3 +55,8 @@ Log
   * 2104  Made the go services to accept a command line argument for the port to listen.
   * 2118  Added a script to ensure that the gRPC service is accessible through a load-balancer.
   * 2130  Improved the demo script.
+
+* 180303
+
+  * 0610  Successfully made a gRPC call.
+  * 0625  Successfully made gRPC calls through the load-balancer and the grpc-wrapper service.

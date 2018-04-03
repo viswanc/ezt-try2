@@ -22,19 +22,19 @@ do
 done
 
 # Main
-echo \nExternal IP: $EXT_IP\n
+echo "\nExternal IP: $EXT_IP"
 
-echo Testing the HTTP service
+echo "\nTesting the HTTP service"
 curl $EXT_IP:80/trace/2
-sleep 1; echo "\n"
+sleep 1
 
-echo Ensure that the gRPC wrapper is running.
+echo "\nEnsure that the gRPC wrapper is running."
 curl $EXT_IP:8090/ping
-sleep 1; echo "\n"
+sleep 1
 
-echo Test gRPC routing through the wrapper. #Note: This fails.
+echo "\nTest the gRPC service directly."
+go run src/grpc-service/client/main.go $EXT_IP:8080
+
+echo "\nTest gRPC routing through the wrapper."
 curl -X POST $EXT_IP:8090/grpc/greet
 sleep 1; echo "\n"
-
-echo Test the gRPC service directly. #Note: This fails.
-go run src/grpc-service/client/main.go $EXT_IP:8080

@@ -19,6 +19,7 @@ done
 
 # Main
 echo \nExternal IP: $EXT_IP\n
-echo Calling the gRPC service...
+
 # Test the gRPC service through the load balancer.
+echo Calling the gRPC service...
 go run src/grpc-service/client/main.go $EXT_IP:80
