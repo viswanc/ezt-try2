@@ -82,3 +82,7 @@ Log
   * 1520  Started using docker as the container repo.
   * 1645  Minor fixes to the scripts.
   * 2350  Removed some unused config.
+
+* 180304
+
+  * 1216  Removed a few superseded files.
