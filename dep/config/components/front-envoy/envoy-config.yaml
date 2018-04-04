@@ -19,7 +19,7 @@ data:
             config:
               generate_request_id: true
               tracing:
-                operation_name: egress # #Note: The filter is applied for egress operations.
+                operation_name: egress
               codec_type: auto
               stat_prefix: ingress_http
               route_config:

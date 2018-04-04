@@ -86,3 +86,4 @@ Log
 * 180304
 
   * 1216  Removed a few superseded files.
+  * 1726  Added a manual.
