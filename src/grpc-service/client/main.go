@@ -22,6 +22,7 @@ import (
 	"log"
 	"os"
 	"time"
+	"fmt"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -29,21 +30,28 @@ import (
 )
 
 const (
-	defaultAddress     = "localhost:8080"
+	defaultAddress    = "localhost:8080"
 	defaultName = "world"
 )
 
-func main() {
-	// Set up a connection to the server.
+func getAddress() string {
+
 	address := defaultAddress
-	if len(os.Args) > 1 {
+	if len(os.Args) > 1 && address != "" {
 		address = os.Args[1]
 	}
+
+	return address
+}
+
+func makeRequest(address string) {
+
+	// Set up a connection to the server.
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	defer conn.Close()
+
 	c := pb.NewGreeterClient(conn)
 
 	// Contact the server and print out its response.
@@ -59,4 +67,78 @@ func main() {
 		log.Fatalf("could not greet: %v", err)
 	}
 	log.Printf("Greeting: %s", r.Message)
+
+	conn.Close()
+
+}
+
+func uniplex() {
+
+	address := getAddress()
+
+	for index := 0; index < 100; index++ {
+
+		makeRequest(address)
+	}
+}
+
+func multiplex() {
+
+	// Set up a connection to the server.
+	address := getAddress()
+	if len(os.Args) > 1 {
+		address = os.Args[1]
+	}
+
+	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+
+	defer conn.Close()
+
+	for index := 0; index < 100; index++ {
+
+		c := pb.NewGreeterClient(conn)
+
+		// Contact the server and print out its response.
+		name := defaultName
+		if len(os.Args) > 2 {
+			name = os.Args[2]
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		log.Printf("Calling: %s", address)
+		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
+		if err != nil {
+			log.Fatalf("could not greet: %v", err)
+		}
+		log.Printf("Greeting: %s", r.Message)
+	}
+}
+
+func main() {
+
+	if len(os.Args) == 1 {
+
+		fmt.Println("Ex: $ go run <script> [ip:port] [m|u]")
+
+	} else if len(os.Args) > 2 {
+
+		f := os.Args[2]
+
+		if f == "u" {
+
+			uniplex()
+
+		} else {
+
+			multiplex()
+		}
+
+	} else {
+
+		makeRequest(getAddress())
+	}
+
 }
