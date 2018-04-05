@@ -11,10 +11,10 @@ kubectl run lbt --image=viswanathct/grpc-service --port 8080 --command=true /usr
 kubectl delete service lbt
 kubectl expose deployment lbt --type=LoadBalancer --port 80 --target-port 8080
 
-export EXT_IP="<pending>"
+EXT_IP="<pending>"
 while [ "$EXT_IP" == "<pending>" ]
 do
-  export EXT_IP=$(kubectl get svc | grep lbt | awk '{printf $4}')
+  EXT_IP=$(kubectl get svc | grep lbt | awk '{printf $4}')
   echo Waiting for external IP...
   sleep 1
 done

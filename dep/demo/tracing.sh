@@ -6,7 +6,7 @@
 cd $(dirname "$0")
 
 # Main
-export EXT_IP=$(kubectl get svc | grep front-envoy-lb | awk '{printf $4}')
+EXT_IP=$(kubectl get svc | grep front-envoy-lb | awk '{printf $4}')
 echo "\nExternal IP: $EXT_IP"
 
 echo "\nTesting the HTTP service"

@@ -1,10 +1,8 @@
-Envoy + Zipkin Tracing - Try 2
-==============================
+# Envoy + Zipkin Tracing - Try 2
 
   Trial-2 of the spike for implementing Zipkin tracing on a Kubernetes cluster.
 
-Setup
------
+## Setup
 Run the following commands.
 
 ```
@@ -13,18 +11,15 @@ $ sh setup.sh # Setup the project.
 $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Note: Disregard any errors on the first-run. In case of a failiure, just break and rerun the script.
 ```
 
-Demo
-----
+## Demo
 
 * Check the dir dep/demo for some demos.
 
-Issues
-------
+## Issues
 
 * *None, yet.*
 
-ToDo
-----
+## ToDo
 
 * Check whether the breakage of the trace, that occurs withe the wrapper-routed gRPC call could be avoided.
 
@@ -32,13 +27,11 @@ ToDo
 
 * Try Jaeger tracing. Envoy's base repo has a working example.
 
-Notes
------
+## Notes
 
 * The base is a conversion of docker-compose files from envoy's zipkin example. The conversion was done with the help of *kompose*.
 
-Structure
----------
+## Structure
 
 * src - The source files for the services.
 
@@ -50,8 +43,7 @@ Structure
 
   * components - Components of the system other than gateways and services.
 
-Log
----
+## Log
 
 * 180328
 
@@ -87,3 +79,7 @@ Log
 
   * 1216  Removed a few superseded files.
   * 1726  Added a manual.
+
+* 180305
+
+  * 1644  Rewrote the route **grpc-wrapper/dynamic/** to request a given URL.

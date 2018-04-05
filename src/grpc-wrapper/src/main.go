@@ -3,7 +3,7 @@ package main
 // Params:
 // 	- Address to listen.
 // 	-	address to route gRPC requests.
-	
+
 import (
 	"github.com/gin-gonic/gin"
 	"fmt"
@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"time"
+	"net/url"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -19,10 +20,7 @@ import (
 )
 
 // Data
-var Routes = map[string]string{
-	"a": "ra",
-	"b": "rb",
-}
+// None.
 
 // Helpers
 func request(url string) string {
@@ -59,17 +57,18 @@ func setupRouter() *gin.Engine {
 	})
 
 	// Dynamic routing.
-	r.GET("/dynamic/:route", func(c *gin.Context) {
-		route := c.Params.ByName("route")
-		value, ok := Routes[route]
+	r.GET("/dynamic/:urls", func(c *gin.Context) {
+		urlToCall, err := url.QueryUnescape(c.Params.ByName("urls"))
 
-		if ok {
+		if err != nil {
 
-			c.JSON(200, gin.H{"route": route, "value": value})
+			log.Fatalf("Failed to escape: %v", err)
+			c.String(503, "Failed to escape :()")
 
 		} else {
 
-			c.JSON(200, gin.H{"route": route, "status": "no value"})
+			log.Printf("Calling %s", urlToCall)
+			c.String(200, request(urlToCall))
 		}
 	})
 
@@ -92,7 +91,7 @@ func setupRouter() *gin.Engine {
 		c.String(200, prefix + "-" + res)
 	})
 
-	r.POST("/grpc/greet", func(c *gin.Context) { // #Note: POST is used to closely resemble a gRPC request.
+	r.GET("/grpc/greet", func(c *gin.Context) {
 
 		address := "localhost:9000"
 		if len(os.Args) > 2 {
