@@ -14,26 +14,15 @@ then
 else
 
   find ../config -type d -depth 2 -not -path "*/\.*" -exec kubectl $1 -f {} \;
-  kubectl $1 -f ../config/gateways
 
   if [ "$1" == "apply" ]
   then
 
-    ZIPKIN_EXT_IP="<pending>"
-    while [ "$ZIPKIN_EXT_IP" == "<pending>" ]
-    do
-      ZIPKIN_EXT_IP=$(kubectl get svc | grep zipkin-lb | awk '{printf $4}')
-      echo Waiting for zipkin...
-      sleep 1
-    done
+    sh ./expose.sh
 
-    EXT_IP="<pending>"
-    while [ "$EXT_IP" == "<pending>" ]
-    do
-      EXT_IP=$(kubectl get svc | grep front-envoy-lb | awk '{printf $4}')
-      echo Waiting for external IP...
-      sleep 1
-    done
+  else
+
+    kubectl $1 -f ../config/gateways
 
   fi
 

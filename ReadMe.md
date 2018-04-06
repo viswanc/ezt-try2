@@ -84,3 +84,8 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 
   * 1644  Rewrote the route **grpc-wrapper/dynamic/** to request a given URL.
   * 1835  Tested gRPC multiplexed load-balancing through Envoy. Kubernetes, by default doesn't offer this.
+
+* 180406
+
+  * 0600  Added a few utility scripts.
+  * 0648  Wrote a demo for load-balancing multiplexed requests through envoy.

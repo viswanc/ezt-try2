@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# A script for demo on request-tracing.
+# A demo script for request-tracing.
 
 # Setup
 cd $(dirname "$0")
@@ -23,5 +23,5 @@ curl $EXT_IP:8090/ping
 echo "\n"
 sleep 1
 
-curl -X POST $EXT_IP:8090/grpc/greet
+curl $EXT_IP:8090/grpc/greet
 sleep 1; echo "\n"
