@@ -15,6 +15,7 @@ import (
 	"net/url"
 
 	"golang.org/x/net/context"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
@@ -107,6 +108,20 @@ func setupRouter() *gin.Engine {
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
+
+		// #ToDo: Find a better way to propagate headers.
+
+		HeadersTpPropogate := [6]string{"X-Request-Id", "X-B3-TraceId", "X-B3-SpanId", "X-B3-ParentSpanId", "X-B3-Sampled", "X-B3-Flags"}
+
+		for _, key := range HeadersTpPropogate {
+
+			val := c.GetHeader(key)
+
+			if val != "" {
+
+				ctx = metadata.AppendToOutgoingContext(ctx, key, val)
+			}
+		}
 
 		log.Printf("Calling: %s", address)
 		r, err := c1.SayHello(ctx, &pb.HelloRequest{Name: "World"})

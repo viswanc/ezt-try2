@@ -34,6 +34,7 @@ const (
 	defaultName = "world"
 )
 
+// Helpers
 func getAddress() string {
 
 	address := defaultAddress
@@ -41,17 +42,25 @@ func getAddress() string {
 		address = os.Args[1]
 	}
 
+	log.Printf("Address: %s", address)
+
 	return address
 }
 
-func makeRequest(address string) {
+func getConnection() *grpc.ClientConn {
 
-	// Set up a connection to the server.
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	conn, err := grpc.Dial(getAddress(), grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Fatalf("Failed to connect: %v", err)
 	}
 
+	return conn
+}
+
+func makeRequest() {
+
+	// Set up a connection to the server.
+	conn := getConnection()
 	c := pb.NewGreeterClient(conn)
 
 	// Contact the server and print out its response.
@@ -61,58 +70,49 @@ func makeRequest(address string) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	log.Printf("Calling: %s", address)
+
 	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
+
 	log.Printf("Greeting: %s", r.Message)
 
 	conn.Close()
-
 }
 
+// Tasks
 func uniplex() {
-
-	address := getAddress()
 
 	for index := 0; index < 100; index++ {
 
-		makeRequest(address)
+		makeRequest()
 	}
 }
 
 func multiplex() {
 
-	// Set up a connection to the server.
-	address := getAddress()
-	if len(os.Args) > 1 {
-		address = os.Args[1]
-	}
-
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-
+	conn := getConnection()
 	defer conn.Close()
+
+	name := defaultName
+	if len(os.Args) > 2 {
+		name = os.Args[2]
+	}
 
 	for index := 0; index < 100; index++ {
 
 		c := pb.NewGreeterClient(conn)
 
 		// Contact the server and print out its response.
-		name := defaultName
-		if len(os.Args) > 2 {
-			name = os.Args[2]
-		}
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
-		log.Printf("Calling: %s", address)
+
 		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
 		if err != nil {
-			log.Fatalf("could not greet: %v", err)
+			log.Fatalf("Could not greet: %v", err)
 		}
+
 		log.Printf("Greeting: %s", r.Message)
 	}
 }
@@ -138,7 +138,7 @@ func main() {
 
 	} else {
 
-		makeRequest(getAddress())
+		makeRequest()
 	}
 
 }

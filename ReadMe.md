@@ -21,7 +21,7 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 
 ## ToDo
 
-* Check whether the breakage of the trace, that occurs withe the wrapper-routed gRPC call could be avoided.
+* Find a better way to propagate headers.
 
 * Use files, instead of strings to configure Envoy. The issue is, such a way is unknown.
 
@@ -89,3 +89,5 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 
   * 0600  Added a few utility scripts.
   * 0648  Wrote a demo for load-balancing multiplexed requests through envoy.
+  * 0727  Refactored the client application.
+  * 0838  Fixed the breakage in the propagation of tracing headers.
