@@ -39,6 +39,8 @@ go run ../../src/grpc-service/client/main.go $EXT_IP:80 m
 
 echo "\nDone. Press any key to continue...\n"
 
+read dummy
+
 # Part 2
 ########
 

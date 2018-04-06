@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: p-front-envoy-lb
+  labels:
+    service: p-front-envoy
+spec:
+  type: LoadBalancer
+  selector:
+    service: p-front-envoy
+  ports:
+  - name: http
+    port: 80
+  - name: admin
+    port: 8001
+  - name: p-grpc-service
+    port: 8080
+  - name: p-grpc-wrapper
+    port: 8090

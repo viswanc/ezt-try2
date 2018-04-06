@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: p-grpc-service
+  labels:
+    service: p-grpc-service
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: p-grpc-service
+    spec:
+      containers:
+      - command: ['tail']
+        args: ['-f', '/dev/null'] # #Note: This essentially is an ever-waiting service. Hence, the container will live, even when the real-process is started.
+        name: p-grpc-service
+        image: viswanathct/grpc-service
+        resources: {}
+      - name: envoy-sidecar
+        image: viswanathct/envoy-sidecar
+        command: ['tail']
+        args: ['-f', '/dev/null']
+        resources: {}
+        volumeMounts:
+        - name: envoy-config-p-grpc-service
+          mountPath: /etc
+      restartPolicy: Always
+      volumes:
+      - name: envoy-config-p-grpc-service
+        configMap:
+          name: envoy-config-p-grpc-service
+          items:
+            - key: config
+              path: envoy-config.yaml
+status: {}

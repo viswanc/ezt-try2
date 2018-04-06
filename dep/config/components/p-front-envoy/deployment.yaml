@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: p-front-envoy
+  labels:
+    service: p-front-envoy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: p-front-envoy
+    spec:
+      containers:
+      - name: envoy-sidecar
+        image: viswanathct/envoy-sidecar
+        command: ['/usr/local/bin/envoy']
+        args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'front-proxy', '-l', 'debug']
+        resources: {}
+        volumeMounts:
+        - name: envoy-config-p-front-envoy
+          mountPath: /etc
+      restartPolicy: Always
+      volumes:
+      - name: envoy-config-p-front-envoy
+        configMap:
+          name: envoy-config-p-front-envoy
+          items:
+            - key: config
+              path: envoy-config.yaml
+status: {}

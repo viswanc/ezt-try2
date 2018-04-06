@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: p-front-envoy
+  labels:
+    service: p-front-envoy
+spec:
+  ports:
+  - name: "80"
+    port: 80
+  - name: "8001" # #Note: The port is specified, as it's used by envoy, for admin (check envoy-config).
+    port: 8001
+  - name: "8080"
+    port: 8080
+  selector:
+    service: p-front-envoy
+status:
+  loadBalancer: {}

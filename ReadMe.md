@@ -21,6 +21,8 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 
 ## ToDo
 
+* Install the needed packages and dependencies through setup.sh.
+
 * Find a better way to propagate headers.
 
 * Use files, instead of strings to configure Envoy. The issue is, such a way is unknown.
@@ -91,3 +93,6 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
   * 0648  Wrote a demo for load-balancing multiplexed requests through envoy.
   * 0727  Refactored the client application.
   * 0838  Fixed the breakage in the propagation of tracing headers.
+  * 1430  Minor fixes to the shell scripts.
+  * 1654  Basic setup for the prober done.
+  * 2000  Successfully reset the pods.
