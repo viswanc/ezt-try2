@@ -7,4 +7,4 @@ RUN mkdir /code
 ADD ./service.py /code
 ADD ./start_service.sh /usr/local/bin/start_service.sh
 RUN chmod u+x /usr/local/bin/start_service.sh
-ENTRYPOINT pwd
+ENTRYPOINT echo "The implementation requires an entry point specified."

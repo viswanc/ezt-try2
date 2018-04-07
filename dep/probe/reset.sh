@@ -1,26 +1,47 @@
 #!/bin/sh
 
+# A script to reset the probes.
+
 cd $(dirname "$0")
 
-reset_pod() {
+# Data
+service_name="$1"
+should_build="$2"
 
-  pod_id="$1"
-  service_name="$2"
+# Helpers
+reset_service() {
 
-  echo "Resetting: $pod_id..."
-  kubectl exec -it $pod_id --tty=false -c envoy-sidecar -- /usr/local/bin/envoy -c /etc/envoy-config.yaml --service-cluster p-$service_name > /dev/null 2>&1 & # #Note: This is to discard the STD streams and to background the process.
-  kubectl exec -it $pod_id --tty=false -c p-$service_name -- pkill -f $service_name || true
-  kubectl exec -it $pod_id --tty=false -c p-$service_name -- /bin/$service_name > /dev/null 2>&1 &
+  if [ "$should_build" == "y" ]
+  then
+    echo "Building: $1"
+    sh ../../src/$1/buildBin.sh
+  fi
+
+  sh ./resetProbe.sh $1
 }
 
-# Reset the grpc-wrapper.
-reset_pod `sh ../utils/getPods.sh p-grpc-wrapper` grpc-wrapper
+echo "\n\n\t\t----\tThe services are reset, even when some commands fail.\t---\n\n"
 
-# Reset the grpc-service.
-sh ../utils/getPods.sh p-grpc-service | while read pod_id
-do
+if [ "$service_name" != "" ]
+then
 
-  reset_pod $pod_id grpc-service & # #Note: The error thrown by the call breaks the while loop. Hence it has to be run in the background.
-  wait
+  if [ "$1" == "-h" ] || [ "$1" == "--help" ]
+  then
 
-done
+    echo "Usage:\n\n\t$ <script> [service_name] [should_build=y|n]\n"
+
+  else
+
+    reset_service $service_name
+
+  fi
+
+else
+
+  find ./config -type d -depth 1 -not -path "*/\.*" | while read directory; do
+
+    reset_service $(basename "$directory")
+
+  done
+
+fi

@@ -96,3 +96,12 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
   * 1430  Minor fixes to the shell scripts.
   * 1654  Basic setup for the prober done.
   * 2000  Successfully reset the pods.
+
+* 180408
+
+  * 0202  Renamed Prober to Probe.
+
+* 180409
+
+  * 1802  Verified that Envoy runs on Kubernetes v1.10.0.
+  * 1817  Setup prober for a service.
