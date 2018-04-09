@@ -8,9 +8,10 @@ if [ "$count" == "" ]; then
   count=1
 fi
 
+echo 'Wating for pods...' >&2
 while [ `kubectl get pods | grep ^$1- | awk '$3 == "Running" {printf "%s\n", $1}' | wc -l` -lt $count ]
 do
-echo 'Wating for pods...' >&2
+  sleep 1
 done
 
 kubectl get pods | grep ^$1- | awk '$3 == "Running" {printf "%s\n", $1}' | while read pod; do

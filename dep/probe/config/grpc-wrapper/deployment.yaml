@@ -2,7 +2,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: p-grpc-service-pv-volume
+  name: p-grpc-wrapper-pv-volume
   labels:
     type: local
 spec:
@@ -17,7 +17,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: p-grpc-service-pv-claim
+  name: p-grpc-wrapper-pv-claim
 spec:
   storageClassName: manual
   accessModes:
@@ -47,27 +47,20 @@ spec:
           command: ['/bin/sh']
           args: ['-c', 'touch /probe/service.log; tail -f /probe/service.log']
           volumeMounts:
-            - name: p-grpc-service-pv-storage
+            - name: p-grpc-wrapper-pv-storage
               mountPath: /probe
         - name: envoy-sidecar
           image: viswanathct/envoy-sidecar
           command: ['/bin/sh']
-          # args: ['-c', 'touch /probe/log; tail -f /probe/log']
-          args: ['-c', 'tail -f /dev/null']
+          args: ['-c', 'touch /probe/envoy.log; tail -f /probe/envoy.log']
           volumeMounts:
+            - name: p-grpc-wrapper-pv-storage
+              mountPath: /probe
             - name: envoy-config-p-grpc-wrapper
               mountPath: /etc
-            - name: p-grpc-service-pv-storage
-              mountPath: /probe
       restartPolicy: Always
       volumes:
-      - name: envoy-config-p-grpc-wrapper
-        configMap:
-          name: envoy-config-p-grpc-wrapper
-          items:
-            - key: config
-              path: envoy-config.yaml
-      - name: p-grpc-service-pv-storage
+      - name: p-grpc-wrapper-pv-storage
         persistentVolumeClaim:
-          claimName: p-grpc-service-pv-claim
+          claimName: p-grpc-wrapper-pv-claim
 status: {}

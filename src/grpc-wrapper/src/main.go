@@ -64,7 +64,7 @@ func setupRouter() *gin.Engine {
 		if err != nil {
 
 			log.Fatalf("Failed to escape: %v", err)
-			c.String(503, "Failed to escape :()")
+			c.String(503, "Failed to escape :(")
 
 		} else {
 

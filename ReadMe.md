@@ -104,4 +104,8 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 * 180409
 
   * 1802  Verified that Envoy runs on Kubernetes v1.10.0.
-  * 1817  Setup prober for a service.
+  * 2014  Setup probe for a service.
+
+* 180410
+
+  * 0114  Setup prober for an envoy sidecar.

@@ -5,6 +5,7 @@
 cd $(dirname "$0")
 
 # Data
+# #Note: These arguments should be provided by the caller.
 pod_id="$1"
 service_name="$2"
 
