@@ -2,7 +2,6 @@
 
 # A util script to get a list of running pods of the given service.
 
-echo "\nGetting pods ...\n" >&2
 count=$2
 if [ "$count" == "" ]; then
   count=1

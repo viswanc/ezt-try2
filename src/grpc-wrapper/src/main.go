@@ -99,6 +99,8 @@ func setupRouter() *gin.Engine {
 			address = os.Args[2]
 		}
 
+		log.Printf("Posting to %s", address)
+
 		conn, err := grpc.Dial(address, grpc.WithInsecure())
 		if err != nil {
 		log.Fatalf("did not connect: %v", err)

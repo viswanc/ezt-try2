@@ -20,7 +20,8 @@ reset_service() {
   sh ./resetProbe.sh $1
 }
 
-echo "\n\n\t\t----\tThe services are reset, even when some commands fail.\t---\n\n"
+echo "\n\n\t----\tThe services are reset, even when some commands fail."
+echo "\t----\tIf it's stuck, just rerun it.\n\n"
 
 if [ "$service_name" != "" ]
 then
