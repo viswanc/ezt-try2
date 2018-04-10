@@ -73,10 +73,10 @@ func makeRequest() {
 
 	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		log.Fatalf("Could not greet: %v", err)
 	}
 
-	log.Printf("Greeting: %s", r.Message)
+	fmt.Printf("Greeting: %s", r.Message)
 
 	conn.Close()
 }
@@ -113,7 +113,7 @@ func multiplex() {
 			log.Fatalf("Could not greet: %v", err)
 		}
 
-		log.Printf("Greeting: %s", r.Message)
+		fmt.Printf("Greeting: %s", r.Message)
 	}
 }
 

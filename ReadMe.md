@@ -112,3 +112,11 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
   * 0142  Setup probe for another service, grpc-service.
   * 2028  Added a utils script, helpers.sh, with helper functions.
   * 2145  Probes reset successful.
+
+* 180411
+
+  * 0034  Made the gRPC services to log pod info, so to allow for easier tracing.
+  * 0106  Implemented a front-envoy for the probes.
+  * 0114  Added a demo for multi-pod load-balancing.
+  * 0144  Improved probe setup.
+  * 0324  Added multiplexed service calls to the grpc-wrapper.

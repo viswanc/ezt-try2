@@ -46,6 +46,11 @@ spec:
         image: viswanathct/grpc-service
         command: ['/bin/sh']
         args: ['-c', 'touch /probe/service.log; tail -f /probe/service.log'] # #Note: This essentially is an ever-waiting process. Hence, the container will live, even when the real-process is started.
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         volumeMounts:
           - name: p-grpc-service-pv-storage
             mountPath: /probe

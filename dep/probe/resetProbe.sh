@@ -11,7 +11,6 @@ service_dir="./config/$service_name"
 # Imports
 source ../utils/helpers.sh
 
-set +x
 # Helpers
 reset_pod() {
 

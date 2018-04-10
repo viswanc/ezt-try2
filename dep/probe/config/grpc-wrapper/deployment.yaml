@@ -46,6 +46,11 @@ spec:
         image: viswanathct/grpc-wrapper
         command: ['/bin/sh']
         args: ['-c', 'touch /probe/service.log; tail -f /probe/service.log']
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         volumeMounts:
           - name: p-grpc-wrapper-pv-storage
             mountPath: /probe

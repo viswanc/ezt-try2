@@ -13,6 +13,7 @@ import (
 	"os"
 	"time"
 	"net/url"
+	"strconv"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/metadata"
@@ -92,18 +93,20 @@ func setupRouter() *gin.Engine {
 		c.String(200, prefix + "-" + res)
 	})
 
-	r.GET("/grpc/greet", func(c *gin.Context) {
+	r.GET("/grpc/greet/:count", func(c *gin.Context) {
 
 		address := "localhost:9000"
 		if len(os.Args) > 2 {
 			address = os.Args[2]
 		}
 
+		count, _ := strconv.Atoi(c.Params.ByName("count"))
+
 		log.Printf("Posting to %s", address)
 
 		conn, err := grpc.Dial(address, grpc.WithInsecure())
 		if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Fatalf("Did not connect: %v", err)
 		}
 		defer conn.Close()
 		c1 := pb.NewGreeterClient(conn)
@@ -113,9 +116,9 @@ func setupRouter() *gin.Engine {
 
 		// #ToDo: Find a better way to propagate headers.
 
-		HeadersTpPropogate := [6]string{"X-Request-Id", "X-B3-TraceId", "X-B3-SpanId", "X-B3-ParentSpanId", "X-B3-Sampled", "X-B3-Flags"}
+		HeadersToPropogate := [6]string{"X-Request-Id", "X-B3-TraceId", "X-B3-SpanId", "X-B3-ParentSpanId", "X-B3-Sampled", "X-B3-Flags"}
 
-		for _, key := range HeadersTpPropogate {
+		for _, key := range HeadersToPropogate {
 
 			val := c.GetHeader(key)
 
@@ -126,13 +129,23 @@ func setupRouter() *gin.Engine {
 		}
 
 		log.Printf("Calling: %s", address)
-		r, err := c1.SayHello(ctx, &pb.HelloRequest{Name: "World"})
-		if err != nil {
-			log.Fatalf("could not greet: %v", err)
-		}
-		log.Printf("Greeting: %s", r.Message)
+		log.Printf("Greeting: %d times.", count)
 
-		c.String(200, r.Message)
+		buffer := ""
+		appendix := "\nThrough: " + os.Getenv("POD_NAME") + "\n"
+
+		for index := 0; index < 100; index++ {
+
+			r, err := c1.SayHello(ctx, &pb.HelloRequest{Name: "World"})
+			if err != nil {
+				log.Fatalf("Could not greet: %v", err)
+			}
+
+			buffer = buffer + r.Message + appendix
+		}
+
+
+		c.String(200, buffer)
 	})
 
 	return r

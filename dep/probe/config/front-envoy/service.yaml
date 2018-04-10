@@ -1,19 +1,23 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: p-front-envoy-lb
+  name: p-front-envoy
   labels:
     service: p-front-envoy
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     service: p-front-envoy
   ports:
   - name: http
+    nodePort: 30080 # #Note: This is the port for external queries.
     port: 80
   - name: admin
+    nodePort: 30801
     port: 8001
   - name: p-grpc-service
+    nodePort: 30880
     port: 8080
   - name: p-grpc-wrapper
+    nodePort: 30890
     port: 8090
