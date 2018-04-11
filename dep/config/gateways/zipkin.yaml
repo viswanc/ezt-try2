@@ -10,5 +10,4 @@ spec:
     service: zipkin
   ports:
   - port: 9411
-    protocol: TCP
     targetPort: 9411

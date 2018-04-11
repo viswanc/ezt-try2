@@ -11,7 +11,7 @@ spec:
   ports:
   - name: http
     nodePort: 30080 # #Note: This is the port for external queries.
-    port: 80
+    port: 80 # #Note: This port is where the service runs.
   - name: admin
     nodePort: 30801
     port: 8001
@@ -21,3 +21,6 @@ spec:
   - name: p-grpc-wrapper
     nodePort: 30890
     port: 8090
+  - name: zipkin
+    nodePort: 30941
+    port: 9411

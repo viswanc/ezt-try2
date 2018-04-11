@@ -14,5 +14,6 @@ then
 else
 
   find ./config -depth 1 -not -path "*/\.*" -exec kubectl $1 -f {} \;
+  kubectl $1 -f ../config/components/zipkin
 
 fi

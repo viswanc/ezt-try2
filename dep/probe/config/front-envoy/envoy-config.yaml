@@ -93,8 +93,31 @@ data:
                     route:
                       cluster: p-grpc-wrapper-envoy
                     decorator:
-                      # #Note: operations are case insensitive.
                       operation: p-grpc-wrapper-call
+              http_filters:
+              - name: envoy.router
+                config: {}
+      - address: # #Note: This is an example for passive routing. ie: Routing traffic without doing anything to it.
+          socket_address:
+            address: 0.0.0.0
+            port_value: 9411
+        filter_chains:
+        - filters:
+          - name: envoy.http_connection_manager
+            config:
+              codec_type: auto
+              stat_prefix: ingress_http
+              route_config:
+                name: zipkin-route
+                virtual_hosts:
+                - name: zipkin-vh
+                  domains:
+                  - "*"
+                  routes:
+                  - match:
+                      prefix: "/"
+                    route:
+                      cluster: zipkin
               http_filters:
               - name: envoy.router
                 config: {}

@@ -6,9 +6,8 @@ metadata:
     service: zipkin
 spec:
   ports:
-  - name: "9411"
+  - name: "standard"
     port: 9411
-    targetPort: 9411
   selector:
     service: zipkin
 status:
