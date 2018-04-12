@@ -19,6 +19,11 @@ reset_service() {
   then
     echo "Building: $1"
     sh ../../src/$1/buildBin.sh
+    if [ $? -ne 0 ]
+    then
+      echo "Build failed..."
+      exit 1
+    fi
   fi
 
   sh ./resetProbe.sh $1
@@ -29,6 +34,8 @@ echo "\t----\tIf it's stuck, just rerun it.\n\n"
 
 if [ "$should_setup" == "y" ]
 then
+  echo "Setting up..."
+
   sh setup.sh delete
   sh setup.sh apply
 

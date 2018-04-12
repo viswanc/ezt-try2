@@ -59,5 +59,5 @@ echo "\nRun the above commands in to separate terminals to watch the logs of the
 read dummy
 
 EXT_IP=$(sh ../utils/getExtIP.sh front-envoy-lb)
-echo "Testing multiplexing with Envoy... on $EXT_IP (both the pods will be hit)"
+echo "Testing multiplexing with Envoy... on $EXT_IP (both the pods would be hit)"
 go run ../../src/grpc-service/client/main.go $EXT_IP:8080 m

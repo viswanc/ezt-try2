@@ -6,11 +6,13 @@
 cd $(dirname "$0")
 
 # Main
-EXT_IP=$(minikube ip)
-echo "\nExternal IP: $EXT_IP"
+EXT_IP=$(sh ../utils/getExtIP.sh)
+echo "\nExternal IP: $EXT_IP\n" >&2
 
 for i in $(seq 1 10)
 do
-  echo $i >&2
+  echo "Call $i" >&2
   curl $EXT_IP:30890/grpc/greet/10 2>/dev/null
 done
+
+echo "" >&2

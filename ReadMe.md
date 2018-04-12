@@ -121,3 +121,7 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
   * 0144  Improved probe setup.
   * 0324  Added multiplexed service calls to the grpc-wrapper.
   * 0954  Added zipkin tracing to the probes.
+
+* 180412
+
+  * 1544  Improved a few scripts.

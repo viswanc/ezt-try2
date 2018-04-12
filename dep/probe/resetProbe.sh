@@ -58,8 +58,6 @@ reset_pod() {
 }
 
 # Main
-kubectl apply -f $service_dir
-
 for pod_id in `sh ../utils/getPods.sh p-$1` # #Note: while command breaks in case of an error in the loop.
 do
 
