@@ -126,7 +126,13 @@ func setupRouter() *gin.Engine {
 			Headers: getHeaderMap(c, HeadersToPropogate),
 		}
 
-		c.String(200, fmt.Sprintf("%sThrough: %s\n", SingleRequest(options), os.Getenv("POD_NAME")))
+		buffer := ""
+		for index := 0; index < options.RequestCount; index++ {
+
+			buffer = buffer + fmt.Sprintf("Through: %s\n", os.Getenv("POD_NAME"))
+		}
+
+		c.String(200, fmt.Sprintf("%s\n%s", buffer, Multiplex(options)))
 	})
 
 	r.GET("/sayHello/:rType/:count", func(c *gin.Context) {

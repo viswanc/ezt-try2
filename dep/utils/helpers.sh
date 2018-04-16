@@ -10,6 +10,12 @@ filter () { # Fiters-in the lines of the input stream, which match the given awk
   done
 }
 
+coln () { # Picks the given (nth) column from the fed lines. Ex: $ echo a b | col 2 # Gives: b
+
+  var=$1
+  awk -v "col=${var}" '{print $col}'
+}
+
 retry () { # Retries a command until an expected result.
 
   # $1: Time to wait between attempts.
@@ -20,8 +26,6 @@ retry () { # Retries a command until an expected result.
 
   while [ $(${@:5} | awk -v regex=$2 -v col=$3 -v val=$4 '$col==val && match($0, regex) {print $0}') ]
   do
-    echo a
-    sleep "$1"
-
+    echo a; sleep "$1"
   done
 }

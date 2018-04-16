@@ -125,3 +125,11 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 * 180412
 
   * 1544  Improved a few scripts.
+
+* 180416
+
+  * 2143  Added a helper script, kube.sh.
+
+* 180417
+
+  * 0007  Verified multi-pod load-balancing on GCE with 10 pods per service.

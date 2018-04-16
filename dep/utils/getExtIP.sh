@@ -2,6 +2,8 @@
 
 # A util script to wait for an external IP.
 
+cd $(dirname "$0")
+
 if [ "$(kubectl config current-context)" == "minikube" ]
 then
 
@@ -9,13 +11,9 @@ then
 
 else
 
-  EXT_IP="<pending>"
-  while [ "$EXT_IP" == "<pending>" ]
-  do
-    EXT_IP=$(kubectl get svc | grep ^$1$ | awk '{printf $4}')
-    echo "Waiting for $1..." >&2
-    sleep 1
-  done
+  source kube.sh # #Note: The script has to be in the same dir as the parent, for indirect imports to work.
+
+  EXT_IP="$(getExtIPGCE $1)"
 
 fi
 

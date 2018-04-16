@@ -12,7 +12,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /probe
+    path: /etc/probe
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -33,7 +33,7 @@ metadata:
   labels:
     service: p-grpc-wrapper
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: Recreate
   template:
@@ -45,7 +45,7 @@ spec:
       - name: p-grpc-wrapper
         image: viswanathct/grpc-wrapper
         command: ['/bin/sh']
-        args: ['-c', 'touch /probe/service.log; tail -f /probe/service.log']
+        args: ['-c', 'touch /etc/probe/service.log; tail -f /etc/probe/service.log']
         env:
         - name: POD_NAME
           valueFrom:
@@ -53,14 +53,14 @@ spec:
               fieldPath: metadata.name
         volumeMounts:
           - name: p-grpc-wrapper-pv-storage
-            mountPath: /probe
+            mountPath: /etc/probe
       - name: envoy-sidecar
         image: viswanathct/envoy-sidecar
         command: ['/bin/sh']
-        args: ['-c', 'touch /probe/envoy.log; tail -f /probe/envoy.log']
+        args: ['-c', 'touch /etc/probe/envoy.log; tail -f /etc/probe/envoy.log']
         volumeMounts:
           - name: p-grpc-wrapper-pv-storage
-            mountPath: /probe
+            mountPath: /etc/probe
       restartPolicy: Always
       volumes:
       - name: p-grpc-wrapper-pv-storage
