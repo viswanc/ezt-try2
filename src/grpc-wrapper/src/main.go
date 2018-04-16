@@ -11,18 +11,14 @@ import (
 	"net/http"
 	"log"
 	"os"
-	"time"
 	"net/url"
 	"strconv"
 
-	"golang.org/x/net/context"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc"
-	pb "google.golang.org/grpc/examples/helloworld/helloworld"
+	. "../../grpc-service/lib/helloworldClient"
 )
 
 // Data
-// None.
+var HeadersToPropogate = []string{"X-Request-Id", "X-B3-TraceId", "X-B3-SpanId", "X-B3-ParentSpanId", "X-B3-Sampled", "X-B3-Flags"}
 
 // Helpers
 func request(url string) string {
@@ -46,6 +42,23 @@ func request(url string) string {
 	}
 
 	return ""
+}
+
+func getHeaderMap(c *gin.Context, Headers []string) map[string]string { // Returns the specified headers from the given Gin-context, as a map.
+
+	Ret := map[string]string{}
+
+	for _, key := range Headers {
+
+		val := c.GetHeader(key)
+
+		if (val != "") {
+
+			Ret[key] = c.GetHeader(key)
+		}
+	}
+
+	return Ret
 }
 
 // Routes
@@ -93,7 +106,7 @@ func setupRouter() *gin.Engine {
 		c.String(200, prefix + "-" + res)
 	})
 
-	r.GET("/grpc/greet/:count", func(c *gin.Context) {
+	r.GET("/grpc/greet/:count", func(c *gin.Context) { // #Later: Phase the route out.
 
 		address := "localhost:9000"
 		if len(os.Args) > 2 {
@@ -102,50 +115,61 @@ func setupRouter() *gin.Engine {
 
 		count, _ := strconv.Atoi(c.Params.ByName("count"))
 
-		log.Printf("Posting to %s", address)
-
-		conn, err := grpc.Dial(address, grpc.WithInsecure())
-		if err != nil {
-		log.Fatalf("Did not connect: %v", err)
-		}
-		defer conn.Close()
-		c1 := pb.NewGreeterClient(conn)
-
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-		defer cancel()
-
-		// #ToDo: Find a better way to propagate headers.
-
-		HeadersToPropogate := [6]string{"X-Request-Id", "X-B3-TraceId", "X-B3-SpanId", "X-B3-ParentSpanId", "X-B3-Sampled", "X-B3-Flags"}
-
-		for _, key := range HeadersToPropogate {
-
-			val := c.GetHeader(key)
-
-			if val != "" {
-
-				ctx = metadata.AppendToOutgoingContext(ctx, key, val)
-			}
-		}
-
 		log.Printf("Calling: %s", address)
 		log.Printf("Greeting: %d times.", count)
 
+		options := ReqOptions {
+
+			Address: address,
+			Name: "world",
+			RequestCount: count,
+			Headers: getHeaderMap(c, HeadersToPropogate),
+		}
+
+		c.String(200, fmt.Sprintf("%sThrough: %s\n", SingleRequest(options), os.Getenv("POD_NAME")))
+	})
+
+	r.GET("/sayHello/:rType/:count", func(c *gin.Context) {
+
+		address := "localhost:9000"
+		if len(os.Args) > 2 {
+			address = os.Args[2]
+		}
+
+		rType := c.Params.ByName("rType")
+		count, _ := strconv.Atoi(c.Params.ByName("count"))
+
+		log.Printf("Posting to %s", address)
+
+		options := ReqOptions {
+
+			Address: address,
+			Name: "world",
+			RequestCount: count,
+			Headers: getHeaderMap(c, HeadersToPropogate),
+		}
+
 		buffer := ""
-		appendix := "\nThrough: " + os.Getenv("POD_NAME") + "\n"
 
-		for index := 0; index < 100; index++ {
+		switch rType {
+			case "u":
+				buffer = Uniplex(options)
 
-			r, err := c1.SayHello(ctx, &pb.HelloRequest{Name: "World"})
-			if err != nil {
-				log.Fatalf("Could not greet: %v", err)
-			}
+			case "m":
+				buffer = Multiplex(options)
 
-			buffer = buffer + r.Message + appendix
+			case "s":
+				buffer = SingleRequest(options)
+
+			case "k":
+				buffer = KeepAlive(options)
+
+			default:
+				fmt.Println("No such option: ", os.Args[2])
 		}
 
 
-		c.String(200, buffer)
+		c.String(200, fmt.Sprintf("%sThrough: %s\n", buffer, os.Getenv("POD_NAME")))
 	})
 
 	return r

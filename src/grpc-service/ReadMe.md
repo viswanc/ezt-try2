@@ -14,3 +14,7 @@
 
   * 1250  Added keepAlive calls to the client.
   * 2254  Extracted out the gRPC client as a library.
+
+* 180415
+
+  * 1528  Refactored the go services.

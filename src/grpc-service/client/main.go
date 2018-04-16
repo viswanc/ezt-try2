@@ -49,26 +49,29 @@ func main() {
 
 	} else {
 
-		rp := ReqParams {
+		options := ReqOptions {
 
 			Address: getAddress(),
 			Name: getName(),
+			RequestCount: 100,
+			Headers: nil,
 		}
 
 		if argCount > 2 {
 
 			switch os.Args[2] {
 			case "u":
-				Uniplex(rp)
+				Uniplex(options)
 
 			case "m":
-				Multiplex(rp)
+				Multiplex(options)
 
 			case "s":
-				SingleRequest(rp)
+				SingleRequest(options)
 
 			case "k":
-				KeepAlive(rp)
+				options.RequestCount = 5
+				KeepAlive(options)
 
 			default:
 				fmt.Println("No such option: ", os.Args[2])
@@ -76,7 +79,7 @@ func main() {
 
 		} else {
 
-			SingleRequest(rp)
+			SingleRequest(options)
 		}
 	}
 }

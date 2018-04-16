@@ -25,8 +25,22 @@ import (
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
+
+
+// Data
+// None
+
+// Structures
+type ReqOptions struct {
+
+	Address string
+	Name string
+	RequestCount int
+	Headers map[string]string
+}
 
 // Helpers
 func getConnection(address string) *grpc.ClientConn { // Sets up a connection to the server.
@@ -63,73 +77,76 @@ func repeat(action func(), duration time.Duration, interval time.Duration) {
 	stop <- true
 }
 
-func makeRequest(conn *grpc.ClientConn, name string) {
+func makeRequest(conn *grpc.ClientConn, options ReqOptions) string {
 
+	buffer := ""
 	c := pb.NewGreeterClient(conn)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second) // Contact the server and print out its response.
 	defer cancel()
 
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
-	if err != nil {
-		log.Fatalf("Could not greet: %v", err)
+	for key, val := range options.Headers {
+
+		ctx = metadata.AppendToOutgoingContext(ctx, key, val)
 	}
 
-	fmt.Printf("Greeting: %s\n", r.Message)
-}
+	for index := 0; index < options.RequestCount; index++ {
 
-// Structures
-type ReqParams struct {
-
-  Address string
-  Name string
-}
-
-// Tasks
-func SingleRequest(rp ReqParams) {
-
-	conn := getConnection(rp.Address)
-
-	makeRequest(conn, rp.Name)
-
-	conn.Close()
-}
-
-func Uniplex(rp ReqParams) {
-
-	for index := 0; index < 100; index++ {
-
-		SingleRequest(rp)
-	}
-}
-
-func Multiplex(rp ReqParams) {
-
-	conn := getConnection(rp.Address)
-	defer conn.Close()
-
-	for index := 0; index < 100; index++ {
-
-		c := pb.NewGreeterClient(conn)
-
-		// Contact the server and print out its response.
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-		defer cancel()
-
-		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: rp.Name})
+		resp, err := c.SayHello(ctx, &pb.HelloRequest{Name: options.Name})
 		if err != nil {
 			log.Fatalf("Could not greet: %v", err)
 		}
 
-		fmt.Printf("Greeting: %s", r.Message)
+		fmt.Printf("Greeting: %s\n", resp.Message)
+		buffer = buffer + resp.Message + "\n"
 	}
+
+	return buffer
 }
 
-func KeepAlive(rp ReqParams) {
+// Tasks
+func Uniplex(options ReqOptions) string {
 
-	conn := getConnection(rp.Address)
+	count := options.RequestCount
+	options.RequestCount = 1
+	buffer := ""
 
-	repeat(func() { makeRequest(conn, rp.Name) }, 5, 1)
+	for index := 0; index < count; index++ {
 
-  conn.Close()
+		conn := getConnection(options.Address)
+		buffer = buffer + makeRequest(conn, options)
+
+		conn.Close()
+	}
+
+	return buffer
+}
+
+func Multiplex(options ReqOptions) string {
+
+	conn := getConnection(options.Address)
+	defer conn.Close()
+
+	return makeRequest(conn, options)
+}
+
+func SingleRequest(options ReqOptions) string {
+
+	options.RequestCount = 1
+
+	return Uniplex(options)
+}
+
+func KeepAlive(options ReqOptions) string {
+
+	conn := getConnection(options.Address)
+	defer conn.Close()
+
+	count := options.RequestCount - 1
+  options.RequestCount = 1
+	action := func() string { return makeRequest(conn, options) }
+	buffer := action()
+
+  repeat(func() { action() }, time.Duration(count), 1)
+
+	return buffer
 }
