@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: statsd-exporter
+  labels:
+    service: statsd-exporter
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        service: statsd-exporter
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: statsd-exporter
+        image: prom/statsd-exporter:latest
+        command: ['/bin/statsd_exporter']
+        args: ['-statsd.listen-udp=:8125', '-statsd.listen-tcp=:9125']
+        ports:
+        - name: udp-in
+          containerPort: 8125
+          protocol: UDP
+        - name: tcp-in
+          containerPort: 9125
+          protocol: TCP
+        - name: tcp-in
+          containerPort: 9102
+          protocol: TCP
+        resources: {}
+status: {}

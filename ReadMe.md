@@ -21,6 +21,8 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 
 ## ToDo
 
+* Fix statsd and prometheus.
+
 * Install the needed packages and dependencies through setup.sh.
 
 * Find a better way to propagate headers.
@@ -53,7 +55,7 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
   * 2322  Ran a simple HTTP service.
   * 2338  Ran the HTTP service using config.
 
-* 180328
+* 180329
 
   * 0030  Decoupled the envoy-sidecar, as a container.
   * 0035  Exposed the HTTP service through front-envoy and verified Zipkin tracing for the same.
@@ -133,3 +135,11 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 * 180417
 
   * 0007  Verified multi-pod load-balancing on GCE with 10 pods per service.
+
+* 180420
+
+  * 2152 Improved the utils script, getPods.sh.
+
+* 180508
+
+  * 1404 Added the structures for Prometheus and StatsD.

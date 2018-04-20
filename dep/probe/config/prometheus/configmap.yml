@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prom-config
+data:
+  config: |-
+    global:
+      scrape_interval: 3s
+      external_labels:
+        monitor: 'prometheus-monitor'
+    scrape_configs:
+      - job_name: 'prometheus'
+        scrape_interval: 3s
+        static_configs:
+          - targets: ['statsd-exporter:9102']

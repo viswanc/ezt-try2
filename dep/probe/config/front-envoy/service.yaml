@@ -15,12 +15,15 @@ spec:
   - name: admin
     nodePort: 30801
     port: 8001
+  - name: zipkin
+    nodePort: 30941
+    port: 9411
+  - name: prometheus
+    nodePort: 30990
+    port: 9090
   - name: p-grpc-service
     nodePort: 30880
     port: 8080
   - name: p-grpc-wrapper
     nodePort: 30890
     port: 8090
-  - name: zipkin
-    nodePort: 30941
-    port: 9411

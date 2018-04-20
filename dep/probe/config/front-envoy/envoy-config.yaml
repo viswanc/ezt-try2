@@ -149,6 +149,14 @@ data:
         - socket_address:
             address: p-grpc-wrapper
             port_value: 80
+      - name: statsd-exporter
+        connect_timeout: 1s
+        type: strict_dns
+        lb_policy: round_robin
+        hosts:
+        - socket_address:
+            address: statsd-exporter
+            port_value: 9125
       - name: zipkin
         connect_timeout: 1s
         type: strict_dns
@@ -163,6 +171,17 @@ data:
         config:
           collector_cluster: zipkin
           collector_endpoint: "/api/v1/spans"
+    stats_sinks:
+      - name: envoy.statsd
+        config:
+          tcp_cluster_name: statsd-exporter
+          # address: # #Pending: Use UDP for better performance, if possible.
+          #   socket_address:
+          #     protocol: UDP
+          #     address: 127.0.0.1
+          #     port_value: 8125
+    stats_config: {} # #Check: https://www.envoyproxy.io/docs/envoy/v1.5.0/api-v2/bootstrap.proto#envoy-api-msg-statsconfig
+    stats_flush_interval: 5s
     admin:
       access_log_path: "/dev/null"
       address:

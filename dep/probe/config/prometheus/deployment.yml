@@ -1,0 +1,43 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: prometheus
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus
+        command: ["prometheus"]
+        args: ["--config.file=/etc/prometheus-config/config.yml"]
+        ports:
+        - name: prometheus-port
+          containerPort: 9090
+          protocol: TCP
+        volumeMounts:
+          - name: prometheus-config-volume
+            mountPath: /etc/prometheus-config
+      volumes:
+        - name: prometheus-config-volume
+          configMap:
+            name: prometheus-config
+            items:
+              - key: config
+                path: config.yml
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus
+  namespace: prometheus
+spec:
+  ports:
+  - name: prometheus-port
+    port: 9090
+    targetPort: 9090
+  selector:
+    app: prometheus
