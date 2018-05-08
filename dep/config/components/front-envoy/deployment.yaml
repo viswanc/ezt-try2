@@ -17,11 +17,11 @@ spec:
       - name: envoy-sidecar
         image: viswanathct/envoy-sidecar
         command: ['/usr/local/bin/envoy']
-        args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'front-proxy', '-l', 'debug']
+        args: ['-c', '/app/envoy-config.yaml', '--service-cluster', 'front-proxy', '-l', 'debug']
         resources: {}
         volumeMounts:
         - name: envoy-config-front-envoy
-          mountPath: /etc
+          mountPath: /app
       restartPolicy: Always
       volumes:
       - name: envoy-config-front-envoy

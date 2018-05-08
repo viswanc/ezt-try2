@@ -25,11 +25,11 @@ spec:
         - name: envoy-sidecar # Configuration for the envoy sidecar container.
           image: viswanathct/envoy-sidecar
           command: ['/usr/local/bin/envoy']
-          args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'service1'] # #Note: The service-cluster value is used as the label for the service, in the tracing reports.
+          args: ['-c', '/app/envoy-config.yaml', '--service-cluster', 'service1'] # #Note: The service-cluster value is used as the label for the service, in the tracing reports.
           resources: {}
           volumeMounts:
             - name: envoy-config-service1
-              mountPath: /etc # Envoy's configuration is mounted to the mountPath specified here.
+              mountPath: /app # Envoy's configuration is mounted to the mountPath specified here.
       restartPolicy: Always
       volumes:
       - name: envoy-config-service1 # This volume is mounted to envoy's container to provide the ConfigMap from ./envoy-config.yaml as a file.

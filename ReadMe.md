@@ -142,4 +142,5 @@ $ sh dep/setup/deploy.sh # Deploy the artifacts to GKE's current namespace. #Not
 
 * 180508
 
-  * 1404 Added the structures for Prometheus and StatsD.
+  * 1404  Added the structures for Prometheus and StatsD.
+  * 1454  Bug fixed: Voulumes couldn't be mounted to */etc* on minikube. Now they're mounted to */app*, instead.

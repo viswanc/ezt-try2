@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Main
-sh /etc/probe/bg.sh /etc/probe/log /bin/grpc-service
+sh /app/probe/bg.sh /app/probe/log /bin/grpc-service

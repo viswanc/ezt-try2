@@ -12,7 +12,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /etc/probe
+    path: /app/probe
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -45,7 +45,7 @@ spec:
       - name: p-grpc-service
         image: viswanathct/grpc-service
         command: ['/bin/sh']
-        args: ['-c', 'touch /etc/probe/service.log; tail -f /etc/probe/service.log'] # #Note: This essentially is an ever-waiting process. Hence, the container will live, even when the real-process is started.
+        args: ['-c', 'touch /app/probe/service.log; tail -f /app/probe/service.log'] # #Note: This essentially is an ever-waiting process. Hence, the container will live, even when the real-process is started.
         env:
         - name: POD_NAME
           valueFrom:
@@ -53,14 +53,14 @@ spec:
               fieldPath: metadata.name
         volumeMounts:
           - name: p-grpc-service-pv-storage
-            mountPath: /etc/probe # #Note: GCE doesn't allow mount path to be at the root.
+            mountPath: /app/probe # #Note: GCE doesn't allow mount path to be at the root.
       - name: envoy-sidecar
         image: viswanathct/envoy-sidecar
         command: ['/bin/sh']
-        args: ['-c', 'touch /etc/probe/envoy.log; tail -f /etc/probe/envoy.log']
+        args: ['-c', 'touch /app/probe/envoy.log; tail -f /app/probe/envoy.log']
         volumeMounts:
         - name: p-grpc-service-pv-storage
-          mountPath: /etc/probe
+          mountPath: /app/probe
       restartPolicy: Always
       volumes:
       - name: p-grpc-service-pv-storage

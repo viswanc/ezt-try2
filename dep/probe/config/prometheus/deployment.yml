@@ -13,14 +13,14 @@ spec:
       - name: prometheus
         image: prom/prometheus
         command: ["prometheus"]
-        args: ["--config.file=/etc/prometheus-config/config.yml"]
+        args: ["--config.file=/app/prometheus-config/config.yml"]
         ports:
         - name: prometheus-port
           containerPort: 9090
           protocol: TCP
         volumeMounts:
           - name: prometheus-config-volume
-            mountPath: /etc/prometheus-config
+            mountPath: /app/prometheus-config
       volumes:
         - name: prometheus-config-volume
           configMap:

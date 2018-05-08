@@ -23,13 +23,13 @@ spec:
           name: service2
           resources: {}
         - command: ['/usr/local/bin/envoy']
-          args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'service2']
+          args: ['-c', '/app/envoy-config.yaml', '--service-cluster', 'service2']
           image: viswanathct/envoy-sidecar
           name: envoy-sidecar
           resources: {}
           volumeMounts:
           - name: envoy-config-service2
-            mountPath: /etc
+            mountPath: /app
       restartPolicy: Always
       volumes:
       - name: envoy-config-service2

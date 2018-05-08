@@ -25,11 +25,11 @@ spec:
         - name: envoy-sidecar
           image: viswanathct/envoy-sidecar
           command: ['/usr/local/bin/envoy']
-          args: ['-c', '/etc/envoy-config.yaml', '--service-cluster', 'grpc-wrapper', '-l', 'debug']
+          args: ['-c', '/app/envoy-config.yaml', '--service-cluster', 'grpc-wrapper', '-l', 'debug']
           resources: {}
           volumeMounts:
             - name: envoy-config-grpc-wrapper
-              mountPath: /etc
+              mountPath: /app
       restartPolicy: Always
       volumes:
       - name: envoy-config-grpc-wrapper
