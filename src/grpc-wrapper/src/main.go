@@ -2,7 +2,7 @@ package main
 
 // Params:
 // 	- Address to listen.
-// 	-	address to route gRPC requests.
+// 	- address to route gRPC requests.
 
 import (
 	"github.com/gin-gonic/gin"
